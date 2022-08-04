@@ -1,0 +1,14 @@
+#This Message is sent to the player when they execute /spawn
+spawn-arrival: "&8[&1SetSpawn&8] &2Welcome to Spawn!"
+
+#This Message is sent to the player when they execute /spawn but there is no spawn-point set
+no-spawn-point: "&8[&1SetSpawn&8] &4You have not set a spawn-point. Use /spawn-point to set it!"
+
+#This Message is sent to the player when they execute /spawn-point
+spawn-set: "&8[&1SetSpawn&8] &2You have set the spawn-point!"
+
+#This Message is sent to the player when they execute /spawn-point, but they don't have permission
+no-permission: "&8[&1SetSpawn&8] &4You don't have permission to use this command!"
+
+#Click this link to see the color codes you can use here. https://www.digminecraft.com/lists/color_list_pc.php
+#instead of '§' use &

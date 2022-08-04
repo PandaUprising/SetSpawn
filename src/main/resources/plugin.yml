@@ -1,0 +1,18 @@
+name: SetSpawn
+version: '${project.version}'
+main: me.pandauprising.setspawn.SetSpawn
+api-version: 1.19
+authors: [ PandaUprising ]
+description: Set your servers spawn and be able to teleport back to it
+commands:
+  SetSpawn:
+    description: Set the server Spawn point
+    usage: /<command>
+    aliases:
+      - ss
+      - setspawn
+  spawn:
+    description: Teleports you back to spawn
+    usage: /<command>
+    aliases:
+      - sp
