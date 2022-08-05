@@ -1,5 +1,5 @@
 # SetSpawn
-SetSpawn Plugin for Minecraft serevrs
+SetSpawn Plugin for Minecraft servers
 
 A Minecraft plugin for Bukkit/Spigot/Paper servers.
 
