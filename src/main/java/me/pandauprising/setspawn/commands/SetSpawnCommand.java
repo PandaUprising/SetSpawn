@@ -17,9 +17,7 @@ public class SetSpawnCommand implements CommandExecutor {
 
     private final SetSpawn plugin;
 
-    public SetSpawnCommand(SetSpawn plugin) {
-        this.plugin = plugin;
-    }
+    public SetSpawnCommand(SetSpawn plugin) {this.plugin = plugin;}
 
 
     @Override
