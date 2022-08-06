@@ -3,7 +3,7 @@ SetSpawn Plugin for Minecraft servers
 
 A Minecraft plugin for Bukkit/Spigot/Paper servers.
 
-Minecraft version supported: 1.8 - 1.19.1
+Minecraft version supported: 1.8 - 1.19.2
 
 Allows server owners to set a Spawnpoint and then allow their players to be able to teleport back to it.
 
