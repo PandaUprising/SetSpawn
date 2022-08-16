@@ -5,7 +5,6 @@ import me.pandauprising.setspawn.commands.SpawnCommand;
 import me.pandauprising.setspawn.listeners.SpawnListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -28,7 +27,6 @@ public final class SetSpawn extends JavaPlugin {
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand(this));
 
         getServer().getPluginManager().registerEvents(new SpawnListener(this), this);
-        getServer().getPluginManager().registerEvents((Listener) new CooldownManager(), this);
     }
 
     @Override
