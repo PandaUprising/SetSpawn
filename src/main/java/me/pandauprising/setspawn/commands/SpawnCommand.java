@@ -1,5 +1,6 @@
 package me.pandauprising.setspawn.commands;
 
+import me.pandauprising.setspawn.Cooldown;
 import me.pandauprising.setspawn.SetSpawn;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,22 +28,32 @@ public class SpawnCommand implements CommandExecutor {
 
             if (p.hasPermission("setspawn.spawn")) {
 
-                Location location = plugin.getConfig().getLocation("spawn");
+                if (!Cooldown.getTriggered()) {
 
-                if (location != null) {
+                    Location location = plugin.getConfig().getLocation("spawn");
 
-                    p.teleport(location);
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
+                    if (location != null) {
+
+                        p.teleport(location);
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
+
+                        Cooldown.triggerCooldown();
+
+                    } else {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
+                    }
 
                 } else {
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
+
+                    p.sendMessage(ChatColor.RED + "You must wait a few more seconds before you can use this command!");
+
                 }
 
-            } else {
-
-                sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
-            }
+                }
+            }else{
+            sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
         }
         return true;
     }
-}
+
+        }
