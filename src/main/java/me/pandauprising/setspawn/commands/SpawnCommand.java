@@ -36,7 +36,7 @@ public class SpawnCommand implements CommandExecutor {
                     if (secondsLeft>0){
 
                         p.sendMessage(ChatColor.RED + "You cant use this command for another " + secondsLeft + " seconds!");
-                        return false;
+                        return true;
                     }
                 }
 
@@ -62,7 +62,7 @@ public class SpawnCommand implements CommandExecutor {
                 }else{
             sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
         }
-        return false;
+        return true;
     }
 
     }
