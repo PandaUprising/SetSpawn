@@ -6,7 +6,7 @@
 
     <groupId>me.pandauprising</groupId>
     <artifactId>SetSpawn</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <packaging>jar</packaging>
 
     <name>SetSpawn</name>

@@ -1,6 +1,5 @@
 package me.pandauprising.setspawn.commands;
 
-import me.pandauprising.setspawn.Cooldown;
 import me.pandauprising.setspawn.SetSpawn;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,10 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class SpawnCommand implements CommandExecutor {
 
+    public HashMap<String, Long> cooldowns = new HashMap<>();
     private final Plugin plugin;
 
     public SpawnCommand(SetSpawn plugin) {
@@ -28,7 +29,18 @@ public class SpawnCommand implements CommandExecutor {
 
             if (p.hasPermission("setspawn.spawn")) {
 
-                if (!Cooldown.getTriggered()) {
+                int cooldownTime = 10;
+
+                if (cooldowns.containsKey(sender.getName())){
+                    long secondsLeft = ((cooldowns.get(sender.getName())/1000 + cooldownTime) - System.currentTimeMillis()/1000);
+                    if (secondsLeft>0){
+
+                        p.sendMessage(ChatColor.RED + "You cant use this command for another " + secondsLeft + " seconds!");
+                        return false;
+                    }
+                }
+
+                cooldowns.put(sender.getName(), System.currentTimeMillis());
 
                     Location location = plugin.getConfig().getLocation("spawn");
 
@@ -36,8 +48,6 @@ public class SpawnCommand implements CommandExecutor {
 
                         p.teleport(location);
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
-
-                        Cooldown.triggerCooldown();
 
                     } else {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
@@ -49,11 +59,11 @@ public class SpawnCommand implements CommandExecutor {
 
                 }
 
-                }
-            }else{
+                }else{
             sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
         }
-        return true;
+        return false;
     }
 
-        }
+    }
+
