@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 
 public final class SetSpawn extends JavaPlugin {
-
     ConsoleCommandSender clogger = this.getServer().getConsoleSender();
     @Override
     public void onEnable() {

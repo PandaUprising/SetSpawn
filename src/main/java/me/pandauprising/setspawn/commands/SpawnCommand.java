@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class SpawnCommand implements CommandExecutor {
-
     public HashMap<String, Long> cooldowns = new HashMap<>();
     private final Plugin plugin;
 
