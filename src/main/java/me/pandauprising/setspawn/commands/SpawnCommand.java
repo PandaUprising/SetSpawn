@@ -14,12 +14,12 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class SpawnCommand implements CommandExecutor {
-    public HashMap<String, Long> cooldowns = new HashMap<>();
-    private final Plugin plugin;
 
     public SpawnCommand(SetSpawn plugin) {
         this.plugin = plugin;
     }
+    public HashMap<String, Long> cooldowns = new HashMap<>();
+    private final Plugin plugin;
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -28,7 +28,7 @@ public class SpawnCommand implements CommandExecutor {
 
             if (p.hasPermission("setspawn.spawn")) {
 
-                int cooldownTime = 10;
+                int cooldownTime = SetSpawn.config.getInt("cooldown-time");
 
                 if (cooldowns.containsKey(sender.getName())){
                     long secondsLeft = ((cooldowns.get(sender.getName())/1000 + cooldownTime) - System.currentTimeMillis()/1000);
