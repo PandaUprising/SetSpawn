@@ -10,5 +10,8 @@ spawn-set: "&8[&1SetSpawn&8] &2You have set the spawn-point!"
 #This Message is sent to the player when they execute /spawn-point, but they don't have permission
 no-permission: "&8[&1SetSpawn&8] &4You don't have permission to use this command!"
 
+#How long to wait until you can use the command again (in seconds)
+cooldown-time: 10
+
 #Click this link to see the color codes you can use here. https://www.digminecraft.com/lists/color_list_pc.php
 #instead of '§' use '&'

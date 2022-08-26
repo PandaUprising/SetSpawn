@@ -5,12 +5,14 @@ import me.pandauprising.setspawn.commands.SpawnCommand;
 import me.pandauprising.setspawn.listeners.SpawnListener;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
 public final class SetSpawn extends JavaPlugin {
 
+    public static FileConfiguration config;
     ConsoleCommandSender clogger = this.getServer().getConsoleSender();
     @Override
     public void onEnable() {
@@ -20,6 +22,7 @@ public final class SetSpawn extends JavaPlugin {
         clogger.sendMessage(ChatColor.AQUA + "---------------------------------------");
 
         //config.yml
+        config = this.getConfig();
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
