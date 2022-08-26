@@ -41,28 +41,27 @@ public class SpawnCommand implements CommandExecutor {
 
                 cooldowns.put(sender.getName(), System.currentTimeMillis());
 
-                    Location location = plugin.getConfig().getLocation("spawn");
+                Location location = plugin.getConfig().getLocation("spawn");
 
-                    if (location != null) {
+                if (location != null) {
 
-                        p.teleport(location);
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
-
-                    } else {
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
-                    }
+                    p.teleport(location);
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
 
                 } else {
-
-                    p.sendMessage(ChatColor.RED + "You must wait a few more seconds before you can use this command!");
-
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
                 }
 
-                }else{
+            } else {
+
+                p.sendMessage(ChatColor.RED + "You must wait a few more seconds before you can use this command!");
+
+            }
+
+        }else{
             sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
         }
         return true;
     }
 
-    }
-
+}
