@@ -6,12 +6,12 @@ A Minecraft plugin for Bukkit/Spigot/Paper servers.
 Minecraft versions supported: 1.8 - 1.19.2
 
 Allows server owners to set a SpawnPoint and then allow their players to be able to teleport back to it.
-### Commands:
+### Commands
 SetSpawn/setspawn/ss - Spawn/spawn/sp
-### Permissions:
+### Permissions
 setspawn.setspawn (To allow the person to set the SpawnPoint), setspawn.spawn (To allow the player to teleport to the SpawnPoint).
 
-### Other Links:
+### Other Links
 
 Spigot: https://www.spigotmc.org/resources/setspawn.103668/
 
