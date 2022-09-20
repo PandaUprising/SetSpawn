@@ -34,7 +34,7 @@ public class SpawnCommand implements CommandExecutor {
                     long secondsLeft = ((cooldowns.get(sender.getName())/1000 + cooldownTime) - System.currentTimeMillis()/1000);
                     if (secondsLeft>0){
 
-                        p.sendMessage(ChatColor.RED + "You cant use this command for another " + secondsLeft + " seconds!");
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("cooldown-message"))) + secondsLeft + " seconds!");
                         return true;
                     }
                 }
@@ -52,9 +52,9 @@ public class SpawnCommand implements CommandExecutor {
                     p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
                 }
 
-            } else {
+            }else{
 
-                p.sendMessage(ChatColor.RED + "You must wait a few more seconds before you can use this command!");
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-permission"))));
 
             }
 
