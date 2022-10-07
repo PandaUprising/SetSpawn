@@ -16,3 +16,4 @@ commands:
     usage: /<command>
     aliases:
       - sp
+      - thiscommandwillteleportyoutospawn
