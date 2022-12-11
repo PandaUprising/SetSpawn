@@ -16,9 +16,14 @@ public final class SetSpawn extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        clogger.sendMessage("");
         clogger.sendMessage(ChatColor.AQUA + "---------------------------------------");
         clogger.sendMessage(ChatColor.GREEN + "     Thank You For Using SetSpawn!");
         clogger.sendMessage(ChatColor.AQUA + "---------------------------------------");
+        clogger.sendMessage("");
+        clogger.sendMessage(ChatColor.GOLD + "New Download link: https://modrinth.com/plugin/setspawn");
+        clogger.sendMessage(ChatColor.GOLD + "Please use this link to support me!");
+        clogger.sendMessage("");
 
         //config.yml
         config = this.getConfig();
@@ -34,9 +39,11 @@ public final class SetSpawn extends JavaPlugin {
     @Override
     public void onDisable() {
 
+        clogger.sendMessage("");
         clogger.sendMessage(ChatColor.DARK_RED + "---------------------------------------");
         clogger.sendMessage(ChatColor.GOLD + "                Goodbye!");
         clogger.sendMessage(ChatColor.DARK_RED + "---------------------------------------");
+        clogger.sendMessage("");
 
     }
 

@@ -2,7 +2,7 @@
 spawn-arrival: "&8[&9SetSpawn&8] &2Welcome to Spawn!"
 
 #This Message is sent to the player when they execute /spawn but there is no spawn-point set
-no-spawn-point: "&8[&9SetSpawn&8] &4You have not set a spawn-point. Use /spawn-point to set it!"
+no-spawnpoint: "&8[&9SetSpawn&8] &4You have not set a spawn-point. Use /spawnpoint to set it!"
 
 #This Message is sent to the player when they execute /spawn-point
 spawn-set: "&0[&9SetSpawn&0] &2You have set the spawn-point!"
