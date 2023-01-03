@@ -21,8 +21,7 @@ public final class SetSpawn extends JavaPlugin {
         clogger.sendMessage(ChatColor.GREEN + "     Thank You For Using SetSpawn!");
         clogger.sendMessage(ChatColor.AQUA + "---------------------------------------");
         clogger.sendMessage("");
-        clogger.sendMessage(ChatColor.GOLD + "New Download link: https://modrinth.com/plugin/setspawn");
-        clogger.sendMessage(ChatColor.GOLD + "Please use this link to support me!");
+        clogger.sendMessage(ChatColor.GOLD + "Thank you for supporting me via Modrinth!");
         clogger.sendMessage("");
 
         //config.yml
