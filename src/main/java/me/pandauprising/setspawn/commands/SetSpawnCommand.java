@@ -13,41 +13,40 @@ import java.util.Objects;
 
 public class SetSpawnCommand implements CommandExecutor {
 
-
-
     private final SetSpawn plugin;
 
-    public SetSpawnCommand(SetSpawn plugin) {this.plugin = plugin;}
-
+    public SetSpawnCommand(SetSpawn plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (sender instanceof Player p){
+        if (sender instanceof Player p) {
 
-            if (p.hasPermission("setspawn.setspawn")){
+            if (p.hasPermission("setspawn.setspawn")) {
 
-            Location location = p.getLocation();
+                Location location = p.getLocation();
 
-            plugin.getConfig().set("spawn", location);
+                plugin.getConfig().set("spawn", location);
 
-            plugin.saveConfig();
+                try {
+                    plugin.saveConfig();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-set"))));
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-set"))));
 
-
-            }else{
+            } else {
 
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-permission"))));
             }
 
-
-
-        }else{
+        } else {
 
             sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
         }
-
 
         return true;
     }
