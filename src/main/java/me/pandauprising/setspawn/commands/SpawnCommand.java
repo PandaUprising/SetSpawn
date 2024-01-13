@@ -1,5 +1,7 @@
 package me.pandauprising.setspawn.commands;
 
+import me.pandauprising.setspawn.SetSpawn;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -7,12 +9,36 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Objects;
 
 public class SpawnCommand implements CommandExecutor {
+    public static final class Countdown {
+        private final Player p;
+        private int countdownTine;
+        private BukkitTask task;
+
+        public Countdown(final Player p, final int countdownTime) {
+            this.p = p;
+            this.countdownTine = countdownTime;
+        }
+
+        public void start(final Runnable callback) {
+            this.task = Bukkit.getScheduler().runTaskTimer(SetSpawn.getInstance(), () -> {
+                if (countdownTine <= 0) {
+                    this.task.cancel();
+                    callback.run();
+                    return;
+                }
+
+                p.sendMessage(String.valueOf(this.countdownTine));
+                --this.countdownTine;
+            }, 0L, 20L);
+        }
+    }
 
     private final Plugin plugin;
     private final HashMap<String, Long> cooldowns = new HashMap<>();
@@ -36,6 +62,13 @@ public class SpawnCommand implements CommandExecutor {
             return true;
         }
 
+        Location location = plugin.getConfig().getLocation("spawn");
+
+        if (location == null) {
+            player.sendMessage(ChatColor.RED + "The spawn point has not been set!");
+            return true;
+        }
+
         int cooldownTime = plugin.getConfig().getInt("cooldown-time");
 
         if (cooldowns.containsKey(player.getName())) {
@@ -52,24 +85,11 @@ public class SpawnCommand implements CommandExecutor {
 
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-countdown"))));
 
-        for (int i = countdownTime; i > 0; i--) {
-            player.sendMessage(String.valueOf(i));
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        new Countdown(player, countdownTime).start(() -> {
+            player.teleport(location);
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
+        });
 
-        Location location = plugin.getConfig().getLocation("spawn");
-
-        if (location == null) {
-            player.sendMessage(ChatColor.RED + "The spawn point has not been set!");
-            return true;
-        }
-
-        player.teleport(location);
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
         return true;
     }
 }
