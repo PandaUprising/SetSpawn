@@ -11,8 +11,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Objects;
 
 public final class SetSpawn extends JavaPlugin {
+    private static SetSpawn singletonInstance;
+
     public static FileConfiguration config;
     ConsoleCommandSender clogger = this.getServer().getConsoleSender();
+
+    public SetSpawn() {
+        singletonInstance = this;
+    }
+
+    public static SetSpawn getInstance() {
+        return singletonInstance;
+    }
+
     @Override
     public void onEnable() {
 
