@@ -9,7 +9,9 @@ Allows server owners to set a SpawnPoint and then allow their players to be able
 ### Commands
 SetSpawn/setspawn/ss - Spawn/spawn/sp
 ### Permissions
-setspawn.setspawn (To allow the person to set the SpawnPoint), setspawn.spawn (To allow the player to teleport to the SpawnPoint).
+setspawn.setspawn (To allow the person to set the SpawnPoint)
+
+setspawn.spawn (To allow the player to teleport to the SpawnPoint).
 
 ### Other Links
 
