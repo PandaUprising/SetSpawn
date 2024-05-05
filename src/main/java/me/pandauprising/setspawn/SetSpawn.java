@@ -8,6 +8,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Objects;
 
 public final class SetSpawn extends JavaPlugin {
@@ -37,8 +38,16 @@ public final class SetSpawn extends JavaPlugin {
 
         //config.yml
         config = this.getConfig();
-        getConfig().options().copyDefaults();
-        saveDefaultConfig();
+
+        File configFile = new File(getDataFolder(), "config.yml");
+
+        if(!configFile.exists()) {
+            getConfig().options().copyDefaults();
+            saveDefaultConfig();
+            reloadConfig();
+        }
+
+        saveConfig();
 
         Objects.requireNonNull(getCommand("setspawn")).setExecutor(new SetSpawnCommand(this));
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand(this));
