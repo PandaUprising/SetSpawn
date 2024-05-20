@@ -1,6 +1,8 @@
 package me.pandauprising.setspawn.listeners;
 
 import me.pandauprising.setspawn.SetSpawn;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,7 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.Objects;
 
 public class SpawnListener implements Listener {
-
     private final SetSpawn plugin;
 
     public SpawnListener(SetSpawn plugin) {
@@ -20,23 +21,18 @@ public class SpawnListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
+        Player player = e.getPlayer();
 
-        Player p = e.getPlayer();
+        if(player.hasPlayedBefore()) return;
 
-        if (!e.getPlayer().hasPlayedBefore()){
+        Location location = plugin.getConfig().getLocation("spawn");
 
-
-            Location location = plugin.getConfig().getLocation("spawn");
-
-            if (location != null){
-
-                p.teleport(location);
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
-
-            }else{
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
-            }
+        if(location == null) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
+            return;
         }
 
+        player.teleport(location);
+        player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
     }
 }

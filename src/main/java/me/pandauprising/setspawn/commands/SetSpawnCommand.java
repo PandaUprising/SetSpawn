@@ -1,6 +1,8 @@
 package me.pandauprising.setspawn.commands;
 
 import me.pandauprising.setspawn.SetSpawn;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -12,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class SetSpawnCommand implements CommandExecutor {
-
     private final SetSpawn plugin;
 
     public SetSpawnCommand(SetSpawn plugin) {
@@ -21,33 +22,20 @@ public class SetSpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
-        if (sender instanceof Player p) {
-
-            if (p.hasPermission("setspawn.setspawn")) {
-
-                Location location = p.getLocation();
-
-                plugin.getConfig().set("spawn", location);
-
-                try {
-                    plugin.saveConfig();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-set"))));
-
-            } else {
-
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("no-permission"))));
-            }
-
-        } else {
-
-            sender.sendMessage(ChatColor.DARK_RED + "You must be a player to use this command!");
+        if(!(sender instanceof Player player)) {
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("no-player"))));
+            return true;
         }
 
+        if(!player.hasPermission("setspawn.setspawn")) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize( Objects.requireNonNull(plugin.getConfig().getString("no-permission"))));
+            return true;
+        }
+
+        plugin.getConfig().set("spawn", player.getLocation());
+        plugin.saveConfig();
+
+        player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("spawn-set"))));
         return true;
     }
 }
