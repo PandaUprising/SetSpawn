@@ -1,27 +1,28 @@
-#This Message is sent to the player when they execute /spawn
-spawn-arrival: "&8[&9SetSpawn&8] &2Welcome to Spawn!"
+# This message will be sent to any player who has been teleported to the spawn-point
+spawn-arrival: "<gray>[<blue>SetSpawn<gray>] <green>You have been teleported to the spawn-point!"
 
-#This Message is sent to the player when they execute /spawn but there is no spawn-point set
-no-spawnpoint: "&8[&9SetSpawn&8] &4You have not set a spawn-point. Use /spawnpoint to set it!"
+# This message is sent to the player when they execute /spawn, but no spawn-point has been set
+no-spawnpoint: "<gray>[<blue>SetSpawn<gray>] <red>No spawn-point has been set yet!"
 
-#This Message is sent to the player when they execute /spawn-point
-spawn-set: "&0[&9SetSpawn&0] &2You have set the spawn-point!"
+# This message is sent to the player when they execute /setspawn and change the spawn-point to their location
+spawn-set: "<gray>[<blue>SetSpawn<gray>] <green>Spawn-point has been set successfully!"
 
-#This Message is sent to the player when they execute /spawn-point, but they don't have permission
-no-permission: "&0[&9SetSpawn&0] &4You don't have permission to use this command!"
+# This message is sent to every player who tries to execute a command without the required permission
+no-permission: "<gray>[<blue>SetSpawn<gray>] <red>You do not have permission to use this command!"
 
-#The message sent to the player if they are on cooldown
-#DO NOT ADD ANYTHING AFTER THE WORD ANOTHER OTHERWISE IT WILL NOT WOR PROPERLY!!! You can still change the last word and anything before it
-cooldown-message: "&0[&9SetSpawn&0] &4Sorry, you can't use this command for another"
+# This message is sent to the console when it tries to execute a command that can only be executed by a player
+no-player: "<gray>[<blue>SetSpawn<gray>] <red>This command can only be executed by a player!"
 
-#How long to wait until you can use the command again (in seconds)
+# This message is sent to the player when they execute /spawn and are teleported to the spawn-point in X seconds
+# Variable: %Time% - The time remaining until the player is teleported to the spawn-point
+countdown-message: "<gray>[<blue>SetSpawn<gray>] <green>You will be teleported to the spawn-point in <bold>%Time%</bold> second(s)!"
+
+# This message is sent to the player when they try to execute a command that is on cooldown
+# Variable: %Time% - The time remaining until the command is off cooldown
+cooldown-message: "<gray>[<blue>SetSpawn<gray>] <red>This command is on cooldown! Please wait <bold>%Time%</bold> second(s)!"
+
+# This is the time it takes to cooldown a command in seconds
 cooldown-time: 10
 
-#The message shown when the player executes /spawn and is not affected by a cooldown
-spawn-countdown: "&0[&9SetSpawn&0] &6 Teleporting in..."
-
-#The amount of time to countdown before teleporting the player in seconds
+# This is the time it takes to teleport a player to the spawn-point in seconds
 countdown-time: 3
-
-#Click this link to see the color codes you can use here. https://www.digminecraft.com/lists/color_list_pc.php
-#instead of '§' use '&'

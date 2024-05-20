@@ -3,6 +3,8 @@ package me.pandauprising.setspawn;
 import me.pandauprising.setspawn.commands.SetSpawnCommand;
 import me.pandauprising.setspawn.commands.SpawnCommand;
 import me.pandauprising.setspawn.listeners.SpawnListener;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,32 +14,17 @@ import java.io.File;
 import java.util.Objects;
 
 public final class SetSpawn extends JavaPlugin {
-    private static SetSpawn singletonInstance;
-
-    public static FileConfiguration config;
-    ConsoleCommandSender clogger = this.getServer().getConsoleSender();
-
-    public SetSpawn() {
-        singletonInstance = this;
-    }
-
-    public static SetSpawn getInstance() {
-        return singletonInstance;
-    }
+    private final ConsoleCommandSender consoleLogger = getServer().getConsoleSender();
 
     @Override
     public void onEnable() {
-
-        clogger.sendMessage("");
-        clogger.sendMessage(ChatColor.AQUA + "---------------------------------------");
-        clogger.sendMessage(ChatColor.GREEN + "     Thank You For Using SetSpawn!");
-        clogger.sendMessage(ChatColor.AQUA + "---------------------------------------");
-        clogger.sendMessage("");
-        clogger.sendMessage(ChatColor.GOLD + "Thank you for supporting me via Modrinth!");
-        clogger.sendMessage("");
-
-        //config.yml
-        config = this.getConfig();
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<blue>---------------------------------------"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<green>     Thank You For Using SetSpawn!"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<blue>---------------------------------------"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<gold>Thank you for supporting me via Modrinth!"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
 
         File configFile = new File(getDataFolder(), "config.yml");
 
@@ -57,15 +44,10 @@ public final class SetSpawn extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
-        clogger.sendMessage("");
-        clogger.sendMessage(ChatColor.DARK_RED + "---------------------------------------");
-        clogger.sendMessage(ChatColor.GOLD + "                Goodbye!");
-        clogger.sendMessage(ChatColor.DARK_RED + "---------------------------------------");
-        clogger.sendMessage("");
-
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<red>---------------------------------------"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<gold>                Goodbye!"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<red>---------------------------------------"));
+        consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
     }
-
-
-
 }

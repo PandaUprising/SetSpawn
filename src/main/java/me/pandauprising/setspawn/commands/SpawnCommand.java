@@ -1,6 +1,8 @@
 package me.pandauprising.setspawn.commands;
 
 import me.pandauprising.setspawn.SetSpawn;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,30 +18,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class SpawnCommand implements CommandExecutor {
-    public static final class Countdown {
-        private final Player p;
-        private int countdownTine;
-        private BukkitTask task;
-
-        public Countdown(final Player p, final int countdownTime) {
-            this.p = p;
-            this.countdownTine = countdownTime;
-        }
-
-        public void start(final Runnable callback) {
-            this.task = Bukkit.getScheduler().runTaskTimer(SetSpawn.getInstance(), () -> {
-                if (countdownTine <= 0) {
-                    this.task.cancel();
-                    callback.run();
-                    return;
-                }
-
-                p.sendMessage(String.valueOf(this.countdownTine));
-                --this.countdownTine;
-            }, 0L, 20L);
-        }
-    }
-
     private final Plugin plugin;
     private final HashMap<String, Long> cooldowns = new HashMap<>();
 
@@ -49,47 +27,72 @@ public class SpawnCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+        if(!(sender instanceof Player player)) {
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("no-player"))));
             return true;
         }
 
-        Player player = (Player) sender;
-
-        if (!player.hasPermission("setspawn.spawn")) {
-            player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+        if(!player.hasPermission("setspawn.spawn")) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("no-permission"))));
             return true;
         }
 
         Location location = plugin.getConfig().getLocation("spawn");
 
-        if (location == null) {
-            player.sendMessage(ChatColor.RED + "The spawn point has not been set!");
+        if(location == null) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("no-spawnpoint"))));
             return true;
         }
 
-        int cooldownTime = plugin.getConfig().getInt("cooldown-time");
+        if(cooldowns.containsKey(player.getName())) {
+            long secondsLeft = ((cooldowns.get(player.getName()) - System.currentTimeMillis()) / 1000);
 
-        if (cooldowns.containsKey(player.getName())) {
-            long secondsLeft = ((cooldowns.get(player.getName()) / 1000 + cooldownTime) - System.currentTimeMillis() / 1000);
-            if (secondsLeft > 0) {
-                player.sendMessage(ChatColor.RED + "You must wait " + secondsLeft + " seconds before using this command again!");
+            if(secondsLeft > 0) {
+                player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("cooldown-message")).replace("%Time%", String.valueOf(secondsLeft))));
                 return true;
             }
         }
 
-        cooldowns.put(player.getName(), System.currentTimeMillis());
-
-        int countdownTime = plugin.getConfig().getInt("countdown-time");
-
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-countdown"))));
-
-        new Countdown(player, countdownTime).start(() -> {
-            player.teleport(location);
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
-        });
-
+        teleportPlayer(player, location);
         return true;
     }
+
+    private void teleportPlayer(Player player, Location location) {
+        int cooldownTime = plugin.getConfig().getInt("cooldown-time");
+        int countdownTime = plugin.getConfig().getInt("countdown-time");
+
+        cooldowns.put(player.getName(), System.currentTimeMillis() + (cooldownTime * 1000L));
+
+        new Countdown(player, countdownTime, plugin).start(() -> {
+            player.teleport(location);
+            player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
+        });
+    }
 }
+
+final class Countdown {
+    private final Player p;
+    private int countdownTine;
+    private final Plugin plugin;
+    BukkitTask task;
+
+    public Countdown(final Player p, final int countdownTime, Plugin plugin) {
+        this.p = p;
+        this.countdownTine = countdownTime;
+        this.plugin = plugin;
+    }
+
+    public void start(final Runnable callback) {
+        task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            if (countdownTine <= 0) {
+                task.cancel();
+                callback.run();
+                return;
+            }
+
+            p.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(Objects.requireNonNull(plugin.getConfig().getString("countdown-message")).replace("%Time%", String.valueOf(countdownTine)))));
+            this.countdownTine--;
+        }, 0L, 20L);
+    }
+}
+
