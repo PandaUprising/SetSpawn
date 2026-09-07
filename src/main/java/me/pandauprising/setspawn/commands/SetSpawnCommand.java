@@ -32,7 +32,14 @@ public class SetSpawnCommand implements CommandExecutor {
             return true;
         }
 
-        plugin.getConfig().set("spawn", player.getLocation());
+        // Validate location before setting
+        Location location = player.getLocation();
+        if (location.getWorld() == null) {
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>Error: Cannot set spawn in an invalid world"));
+            return true;
+        }
+
+        plugin.getConfig().set("spawn", location);
         plugin.saveConfig();
 
         player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("spawn-set"))));

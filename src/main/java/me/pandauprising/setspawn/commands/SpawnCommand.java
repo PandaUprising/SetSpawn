@@ -16,10 +16,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SpawnCommand implements CommandExecutor {
     private final Plugin plugin;
     private final HashMap<String, Long> cooldowns = new HashMap<>();
+    private final ConcurrentHashMap<String, BukkitTask> activeCountdowns = new ConcurrentHashMap<>();
 
     public SpawnCommand(Plugin plugin) {
         this.plugin = plugin;
@@ -44,6 +46,12 @@ public class SpawnCommand implements CommandExecutor {
             return true;
         }
 
+        // Cancel any active countdown for this player
+        BukkitTask existingTask = activeCountdowns.get(player.getName());
+        if (existingTask != null && !existingTask.isCancelled()) {
+            existingTask.cancel();
+        }
+
         if(cooldowns.containsKey(player.getName())) {
             long secondsLeft = ((cooldowns.get(player.getName()) - System.currentTimeMillis()) / 1000);
 
@@ -64,9 +72,54 @@ public class SpawnCommand implements CommandExecutor {
         cooldowns.put(player.getName(), System.currentTimeMillis() + (cooldownTime * 1000L));
 
         new Countdown(player, countdownTime, plugin).start(() -> {
+            // Cancel any active countdown before teleporting
+            BukkitTask task = activeCountdowns.remove(player.getName());
+            if (task != null && !task.isCancelled()) {
+                task.cancel();
+            }
+            
             player.teleport(location);
             player.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(plugin.getConfig().getString("spawn-arrival"))));
         });
+    }
+
+    // Inner class for countdown timer
+    final class Countdown {
+        private final Player p;
+        private int countdownTime;
+        private final Plugin plugin;
+        BukkitTask task;
+
+        public Countdown(final Player p, final int countdownTime, Plugin plugin) {
+            this.p = p;
+            this.countdownTime = countdownTime;
+            this.plugin = plugin;
+        }
+
+        public void start(final Runnable callback) {
+            // Cancel any existing task for this player
+            if (activeCountdowns.containsKey(p.getName())) {
+                BukkitTask existingTask = activeCountdowns.get(p.getName());
+                if (existingTask != null && !existingTask.isCancelled()) {
+                    existingTask.cancel();
+                }
+            }
+
+            task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+                if (countdownTime <= 0) {
+                    task.cancel();
+                    activeCountdowns.remove(p.getName());
+                    callback.run();
+                    return;
+                }
+
+                p.sendMessage(MiniMessage.miniMessage().deserialize(Objects.requireNonNull(Objects.requireNonNull(plugin.getConfig().getString("countdown-message")).replace("%Time%", String.valueOf(countdownTime)))));
+                this.countdownTime--;
+            }, 0L, 20L);
+            
+            // Store reference for cancellation
+            activeCountdowns.put(p.getName(), task);
+        }
     }
 }
 

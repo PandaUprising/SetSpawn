@@ -18,6 +18,9 @@ public final class SetSpawn extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Initialize config
+        saveDefaultConfig();
+
         consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
         consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<blue>---------------------------------------"));
         consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<green>     Thank You For Using SetSpawn!"));
@@ -26,19 +29,11 @@ public final class SetSpawn extends JavaPlugin {
         consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize("<gold>Thank you for supporting me via Modrinth!"));
         consoleLogger.sendMessage(MiniMessage.miniMessage().deserialize(""));
 
-        File configFile = new File(getDataFolder(), "config.yml");
-
-        if(!configFile.exists()) {
-            getConfig().options().copyDefaults();
-            saveDefaultConfig();
-            reloadConfig();
-        }
-
-        saveConfig();
-
+        // Register commands
         Objects.requireNonNull(getCommand("setspawn")).setExecutor(new SetSpawnCommand(this));
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand(this));
 
+        // Register event listeners
         getServer().getPluginManager().registerEvents(new SpawnListener(this), this);
     }
 

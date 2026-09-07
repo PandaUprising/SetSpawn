@@ -1,7 +1,7 @@
 name: SetSpawn
 version: '${project.version}'
 main: me.pandauprising.setspawn.SetSpawn
-api-version: 1.20
+api-version: 26.2
 authors: [ PandaUprising ]
 description: This plugin allows you to set a spawn point for your server and teleport back to it
 commands:
